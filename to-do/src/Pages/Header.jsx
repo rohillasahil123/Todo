@@ -10,6 +10,7 @@ const Header = () => {
         <div className='flex space-x-3 p-3 font-serif text-md'>
             <div className='hover:cursor-pointer' ><Link to='/list' >List</Link></div>
             <div className='hover:cursor-pointer' > <Link to='/' >Add Task</Link></div>
+            <div className='hover:cursor-pointer' > <Link to='/login' >Login</Link></div>
         </div>
     </div>
   )

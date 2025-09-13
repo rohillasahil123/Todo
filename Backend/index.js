@@ -1,8 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const TodoList = require("./models/Todolist");
+const user = require("./models/User_Model")
+const Jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
 const mongoDbConnection = require("./dbconfig");
-const cors = require("cors")
+const cors = require("cors");
 
 const app = express()
 
@@ -14,7 +17,47 @@ mongoDbConnection()
 
 app.get("/get", async (req, res) => {
     res.json("work")
+})
 
+app.post("/signup", async (req, res) => {
+    try {
+        const { email, password, name } = req.body
+        const hashPassword = await bcrypt.hash(password, 10)
+        const response = new user({
+            email, password: hashPassword, name
+        })
+
+        const result = await response.save()
+
+        if (result) {
+            const payload = { id: result._id, email: result.email };
+        const token = Jwt.sign(payload, "google", { expiresIn: "1h" })
+
+            return res.status(201).send({ message: "success", data: result, token })
+        } else {
+            console.log(error)
+        }
+    } catch (error) {
+        res.status(500).json({ message: "internal error", error })
+    }
+})
+
+
+app.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const User = await user.findOne({ email })
+        if (!User) {
+            res.status(404).send({ message: "email not found" })
+        }
+        if (User.password !== password) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+        res.status(200).json({ message: "success" })
+
+    } catch (error) {
+        res.status(500).json({ message: "internal error", error })
+    }
 })
 
 
@@ -69,7 +112,7 @@ app.put("/update-task/:id", async (req, res) => {
 
 app.delete("/delete/multiple", async (req, res) => {
     try {
-        const { ids } = req.params
+        const { ids } = req.body
         if (!ids || !Array.isArray(ids)) {
             return res.status(400).json({ message: "ids array required" });
         }

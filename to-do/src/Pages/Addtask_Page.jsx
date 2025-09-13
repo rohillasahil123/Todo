@@ -69,7 +69,14 @@ const Addtask_Page = () => {
         const result = await axios.delete('http://localhost:5000/delete/multiple' ,{
           data :{ ids : selectIds}
         })
-        console.log(result.data , "delete")
+        if(result.data.message == "success"){
+          toast.success("delete")
+             fatchData()
+             setSelectIds([])
+        }else{
+          toast.error("error")
+        }
+       
     } catch (error) {
       
     }
@@ -119,9 +126,9 @@ const Addtask_Page = () => {
                   className="w-4 h-4 accent-blue-500"
                 />
               </td>
-              <td className="border p-2">{index + 1}</td>
-              <td className="border p-2">{task.title}</td>
-              <td className="border p-2">{task.description}</td>
+              <td className="border text-center p-2">{index + 1}</td>
+              <td className="border text-center p-2">{task.title}</td>
+              <td className="border text-center p-2">{task.description}</td>
               <td className="border p-2 flex gap-2 justify-center">
                 <Button 
                   text="Delete" 
@@ -130,7 +137,7 @@ const Addtask_Page = () => {
                   onClick={() => handleDelete(task._id)} 
                 />
                 <Button 
-                  text="Update" 
+                  text="Edit" 
                   color="bg-blue-500" 
                   textcolor="text-white" 
                   onClick={() => handleUpdate(task._id)} 
