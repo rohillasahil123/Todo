@@ -32,9 +32,10 @@ const handleChange = (e)=>{
           name , email , password 
         })
         const data = result.data
-        console.log(data , "response")
+        console.log(data.token , "response")
         if(data.message === "success"){
           toast.success("Registeration success")
+        
          navigation("/login") 
         }
     } catch (error) {
@@ -49,7 +50,7 @@ const handleChange = (e)=>{
 
   return (
     <div className='w-full h-[90vh] items-center flex justify-center ' >
-      <div className='h-[60vh] w-[34%]  shadow-2xl border flex flex-col     '>
+     <div className='h-[40vh] sm:h-[60vh] w-[70%] sm:w-[34%] shadow-2xl border flex flex-col     '>
         <div className='text-center mt-[10%]    '>
           <h1 className='text-2xl  font-extrabold p-4 '>REIGSTER HERE</h1>
         </div>

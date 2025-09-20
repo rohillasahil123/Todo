@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from "react-hot-toast"
+import Cookie from 'js-cookie'
 
 
 const Login_page = () => {
@@ -27,14 +28,18 @@ const Login_page = () => {
         const response = await axios.post("http://localhost:5000/login", {
           email, password
         })
+      console.log(response.data)
+
         if (response.status === 200) {
+          Cookie.set("token", response.data.token)
           toast.success("login")
           navigate("/")
           setEmail("")
           setPassword("")
         }
       } catch (error) {
-        toast.error("internal error")
+        toast.error("internal error" + error)
+        console.log(error)
       }
     }
 
@@ -45,7 +50,7 @@ const Login_page = () => {
 
   return (
     <div className='w-full h-[90vh] items-center flex justify-center ' >
-      <div className='h-[60vh] w-[34%]  shadow-2xl border flex flex-col     '>
+      <div className='h-[40vh] sm:h-[60vh] w-[70%] sm:w-[34%] shadow-2xl border flex flex-col     '>
         <div className='text-center mt-[10%]    '>
           <h1 className='text-2xl  font-extrabold p-4 '>LOGIN HERE</h1>
         </div>
@@ -59,7 +64,7 @@ const Login_page = () => {
             LOGIN
           </button>
         </div>
-        <p className='mt-7 text-center'>if you have no account so please <span className='underline text-blue-600 hover:cursor-pointer'> <Link to="/sign" >register</Link></span></p>
+        <p className='mt-7 p-[5%] items-center  text-center'>if you have no account so please <span className='underline text-blue-600 hover:cursor-pointer'> <Link to="/sign" >register</Link></span></p>
       </div>
 
     </div>

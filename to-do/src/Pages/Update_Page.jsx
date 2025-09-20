@@ -51,12 +51,9 @@ const Update_Page = () => {
     }
 
 
-
-
-
   return (
     <div className='w-full h-[90vh] flex justify-center items-center'>
-      <div className='w-[44%] h-[70vh] rounded-xl shadow-2xl p-6'>
+     <div className='h-[40vh] sm:h-[60vh] w-[70%] sm:w-[34%] shadow-2xl border flex flex-col     '>
 
         <h1 className='text-center font-bold text-2xl mb-6'>Add New Task</h1>
 

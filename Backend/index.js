@@ -28,15 +28,8 @@ app.post("/signup", async (req, res) => {
         })
 
         const result = await response.save()
-
-        if (result) {
-            const payload = { id: result._id, email: result.email };
-        const token = Jwt.sign(payload, "google", { expiresIn: "1h" })
-
-            return res.status(201).send({ message: "success", data: result, token })
-        } else {
-            console.log(error)
-        }
+      
+            return res.status(201).send({ message: "success", data: result, })
     } catch (error) {
         res.status(500).json({ message: "internal error", error })
     }
@@ -44,21 +37,31 @@ app.post("/signup", async (req, res) => {
 
 
 app.post("/login", async (req, res) => {
-    try {
-        const { email, password } = req.body
-        const User = await user.findOne({ email })
-        if (!User) {
-            res.status(404).send({ message: "email not found" })
-        }
-        if (User.password !== password) {
-            return res.status(401).json({ message: "Invalid credentials" });
-        }
-        res.status(200).json({ message: "success" })
-
-    } catch (error) {
-        res.status(500).json({ message: "internal error", error })
+  try {
+    const { email, password } = req.body
+    const User = await user.findOne({ email })
+    
+    if (!User) {
+      return res.status(404).send({ message: "email not found" })
     }
+    const isMatch = await bcrypt.compare(password, User.password)
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" })
+    }
+    const payload = { id: User._id, email: User.email }
+    const token = Jwt.sign(payload, "google", { expiresIn: "1h" })
+
+    return res.status(200).json({ 
+      message: "success", 
+      token, 
+      user: { id: User._id, email: User.email, name: User.name } 
+    })
+
+  } catch (error) {
+    res.status(500).json({ message: "internal error", error })
+  }
 })
+
 
 
 

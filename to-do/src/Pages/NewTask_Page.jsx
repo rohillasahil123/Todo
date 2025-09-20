@@ -39,9 +39,9 @@ const NewTask_Page = () => {
 
   return (
     <div className='w-full h-[90vh] flex justify-center items-center'>
-      <div className='w-[44%] h-[70vh] rounded-xl shadow-2xl p-6'>
+     <div className='h-[50vh] sm:h-[69vh] w-[80%] sm:w-[34%] shadow-2xl border flex flex-col  items-center p-4   '>
 
-        <h1 className='text-center font-bold text-2xl mb-6'>Add New Task</h1>
+        <h1 className='text-center font-bold text-2xl mb-6 p-[4%]'>Add New Task</h1>
 
         <div className='flex flex-col items-center w-full gap-4'>
 
